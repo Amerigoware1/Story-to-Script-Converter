@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F59B12D1-4411-49A1-BF61-E447788BC63A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Story_to_script_converter.Form1</StartupObject>
+    <RootNamespace>Story_to_script_converter</RootNamespace>
+    <AssemblyName>Story to script converter</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Story to script converter.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Story to script converter.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>Off</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FuzzySharp, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FuzzySharp.2.0.2\lib\net461\FuzzySharp.dll</HintPath>
+    </Reference>
+    <Reference Include="grizzly-framework-2.4.4, Version=2.4.4.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\grizzly-framework-2.4.4.dll</HintPath>
+    </Reference>
+    <Reference Include="grizzly-http-2.4.4, Version=2.4.4.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\grizzly-http-2.4.4.dll</HintPath>
+    </Reference>
+    <Reference Include="grizzly-http-server-2.4.4, Version=2.4.4.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\grizzly-http-server-2.4.4.dll</HintPath>
+    </Reference>
+    <Reference Include="hppc-0.7.2, Version=0.7.2.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\hppc-0.7.2.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Java, Version=8.2.0.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\packages\IKVM.8.2.1\lib\net461\IKVM.Java.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Reflection, Version=8.2.0.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\packages\IKVM.8.2.1\lib\net461\IKVM.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime, Version=8.2.0.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\packages\IKVM.8.2.1\lib\net461\IKVM.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime.JNI, Version=8.2.0.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <HintPath>..\packages\IKVM.8.2.1\lib\net461\IKVM.Runtime.JNI.dll</HintPath>
+    </Reference>
+    <Reference Include="jackson-annotations-2.10.1, Version=2.10.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jackson-annotations-2.10.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jackson-core-2.10.1, Version=2.10.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jackson-core-2.10.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jackson-databind-2.10.1, Version=2.10.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jackson-databind-2.10.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jackson-module-jaxb-annotations-2.10.1, Version=2.10.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jackson-module-jaxb-annotations-2.10.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jakarta.activation-api-1.2.1, Version=1.2.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jakarta.activation-api-1.2.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jakarta.annotation-api-1.3.5, Version=1.3.5.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jakarta.annotation-api-1.3.5.dll</HintPath>
+    </Reference>
+    <Reference Include="jakarta.inject-2.6.1, Version=2.6.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jakarta.inject-2.6.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jakarta.validation-api-2.0.2, Version=2.0.2.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jakarta.validation-api-2.0.2.dll</HintPath>
+    </Reference>
+    <Reference Include="jakarta.ws.rs-api-2.1.6, Version=2.1.6.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jakarta.ws.rs-api-2.1.6.dll</HintPath>
+    </Reference>
+    <Reference Include="jakarta.xml.bind-api-2.3.2, Version=2.3.2.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jakarta.xml.bind-api-2.3.2.dll</HintPath>
+    </Reference>
+    <Reference Include="jcommander-1.78, Version=1.78.0.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jcommander-1.78.dll</HintPath>
+    </Reference>
+    <Reference Include="jersey-client-2.30.1, Version=2.30.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jersey-client-2.30.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jersey-common-2.30.1, Version=2.30.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jersey-common-2.30.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jersey-container-grizzly2-http-2.30.1, Version=2.30.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jersey-container-grizzly2-http-2.30.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jersey-entity-filtering-2.30.1, Version=2.30.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jersey-entity-filtering-2.30.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jersey-media-jaxb-2.30.1, Version=2.30.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jersey-media-jaxb-2.30.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jersey-media-json-jackson-2.30.1, Version=2.30.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jersey-media-json-jackson-2.30.1.dll</HintPath>
+    </Reference>
+    <Reference Include="jersey-server-2.30.1, Version=2.30.1.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\jersey-server-2.30.1.dll</HintPath>
+    </Reference>
+    <Reference Include="morfologik-fsa-2.1.7, Version=2.1.7.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\morfologik-fsa-2.1.7.dll</HintPath>
+    </Reference>
+    <Reference Include="morfologik-fsa-builders-2.1.7, Version=2.1.7.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\morfologik-fsa-builders-2.1.7.dll</HintPath>
+    </Reference>
+    <Reference Include="morfologik-stemming-2.1.7, Version=2.1.7.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\morfologik-stemming-2.1.7.dll</HintPath>
+    </Reference>
+    <Reference Include="morfologik-tools-2.1.7, Version=2.1.7.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\morfologik-tools-2.1.7.dll</HintPath>
+    </Reference>
+    <Reference Include="opennlp-brat-annotator-1.9.4, Version=1.9.4.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\opennlp-brat-annotator-1.9.4.dll</HintPath>
+    </Reference>
+    <Reference Include="opennlp-morfologik-addon-1.9.4, Version=1.9.4.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\opennlp-morfologik-addon-1.9.4.dll</HintPath>
+    </Reference>
+    <Reference Include="opennlp-tools-1.9.4, Version=1.9.4.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\opennlp-tools-1.9.4.dll</HintPath>
+    </Reference>
+    <Reference Include="opennlp-uima-1.9.4, Version=1.9.4.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\opennlp-uima-1.9.4.dll</HintPath>
+    </Reference>
+    <Reference Include="osgi-resource-locator-1.0.3, Version=1.0.3.0, Culture=neutral, PublicKeyToken=f2aa5350432048ad, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenNLP.NET.1.9.4.1\lib\net461\osgi-resource-locator-1.0.3.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Character.vb" />
+    <Compile Include="DialogueAssignmentControl.Designer.vb">
+      <DependentUpon>DialogueAssignmentControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogueAssignmentControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DialogueAttribution.vb" />
+    <Compile Include="FileInputControl.Designer.vb">
+      <DependentUpon>FileInputControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FileInputControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="NameIdentificationControl.Designer.vb">
+      <DependentUpon>NameIdentificationControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="NameIdentificationControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReviewControl.Designer.vb">
+      <DependentUpon>ReviewControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ReviewControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VoiceAssignmentControl.Designer.vb">
+      <DependentUpon>VoiceAssignmentControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VoiceAssignmentControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DialogueAssignmentControl.resx">
+      <DependentUpon>DialogueAssignmentControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileInputControl.resx">
+      <DependentUpon>FileInputControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NameIdentificationControl.resx">
+      <DependentUpon>NameIdentificationControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReviewControl.resx">
+      <DependentUpon>ReviewControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VoiceAssignmentControl.resx">
+      <DependentUpon>VoiceAssignmentControl.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="SpeechLib">
+      <Guid>{D3C4A7F2-7D27-4332-B41F-593D71E16DB1}</Guid>
+      <VersionMajor>11</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,209 @@
+﻿Imports System.Collections.ObjectModel
+Imports System.Globalization
+Imports System.Speech.Synthesis
+Imports SpeechLib
+
+Public Class VoiceAssignmentControl '(WizardSteps(3)
+
+    Public DialogueAssignments As New Dictionary(Of String, List(Of String)) ' To store character dialogue assignments
+    Private characterVoiceAssignments As New Dictionary(Of String, String) ' New dictionary for character-voice assignments
+    Private WithEvents Vox As New SpeechSynthesizer
+    Public NarratorVoice As String
+    Private Characters As New List(Of Character)
+
+    Private Sub VoiceAssignmentControl_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        DataGridView1.Columns.Add("Character", "Character")
+        DataGridView1.Columns.Add("Age", "Age")
+        Dim genderColumn As New DataGridViewComboBoxColumn With {
+            .Name = "Gender",
+            .HeaderText = "Gender",
+            .DataSource = [Enum].GetValues(GetType(Character.GenderType)) ' Populate with enum values
+            }
+        DataGridView1.Columns.Add(genderColumn)
+        Dim VoiceColumn As New DataGridViewComboBoxColumn With {
+            .Name = "Voice",
+            .HeaderText = "Voice",
+            .DataSource = GetAvailableVoices()' Populate with available voices
+            }
+        Dim installedVoices As ReadOnlyCollection(Of InstalledVoice) = Vox.GetInstalledVoices()
+        IO.File.AppendAllText("log.txt", "Installed Voices:" & vbNewLine)
+        For Each v As InstalledVoice In installedVoices
+            IO.File.AppendAllText("log.txt", $"{v.VoiceInfo.Name} - {v.VoiceInfo.Culture.Name}" & vbNewLine)
+        Next
+        DataGridView1.Columns.Add(VoiceColumn)
+        ' Populate Characters list
+        Dim dialogueControl As DialogueAssignmentControl = TryCast(Form1.WizardSteps(2), DialogueAssignmentControl)
+        For Each characterName As String In dialogueControl.CharacterNames
+            Dim newCharacter As New Character(characterName)
+            Characters.Add(newCharacter)
+        Next
+        ' Populate data (example with manual row addition)
+
+        NarratorVoiceComboBox.Items.AddRange(GetAvailableVoices())
+
+        If DialogueAssignments IsNot Nothing Then
+            For Each character As String In DialogueAssignments.Keys
+                DataGridView1.Rows.Add(character, "", "", "")
+            Next
+        End If
+
+    End Sub
+
+    Private Function GetAvailableVoices() As String()
+        Return Vox.GetInstalledVoices().
+        Where(Function(v) v.Enabled AndAlso Not v.VoiceInfo.Name.StartsWith("IVONA", StringComparison.OrdinalIgnoreCase)).
+        Select(Function(v) v.VoiceInfo.Name).
+        ToArray()
+    End Function
+
+    Public Function GetCharacterVoiceAssignments() As Dictionary(Of String, String)
+        ' ... (Extract assignments from the UI and return the dictionary) ...
+        Return characterVoiceAssignments ' Return the new dictionary
+    End Function
+
+    Private Sub NarratorVoiceComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles NarratorVoiceComboBox.SelectedIndexChanged
+        Try
+            If NarratorVoiceComboBox.SelectedItem IsNot Nothing Then
+                NarratorVoice = NarratorVoiceComboBox.SelectedItem.ToString()
+                Vox.SelectVoice(NarratorVoice)
+                Vox.SpeakAsync("Hello, this is the narrator speaking.")
+            End If
+        Catch ex As Exception
+            MessageBox.Show($"Error selecting voice: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    Private Sub GuessVoiceForCharacter(characterName As String, gender As String, Optional age As Integer = -1)
+        Dim hints As New List(Of String) From {
+        characterName ' Add the character name as a hint
+    }
+        ' Add gender and age hints if available
+        If Not String.IsNullOrEmpty(gender) Then
+            hints.Add(gender)
+        End If
+        If age >= 0 Then
+            hints.Add(If(age < 18, "Young", If(age > 60, "Old", "Adult")))
+        End If
+        Try
+            ' Use a default culture (e.g., "en-US")
+            Dim culture As New CultureInfo("en-US")
+
+            ' Get installed voices
+            Dim installedVoices As ReadOnlyCollection(Of InstalledVoice) = Vox.GetInstalledVoices()
+            ' Filter voices based on hints and culture
+            'Dim matchingVoices As List(Of InstalledVoice) = installedVoices.Where(Function(voice)
+            '                                                                          Return hints.Any(Function(hint) voice.VoiceInfo.Name.ToLower().Contains(hint.ToLower()))
+            '                                                                      End Function).ToList()
+            ' Filter voices based on hints and English locales
+            ' Dim matchingVoices As List(Of InstalledVoice) = installedVoices.Where(Function(voice)
+            '                                                                           Return hints.Any(Function(hint) voice.VoiceInfo.Name.ToLower().Contains(hint.ToLower())) AndAlso
+            '(voice.VoiceInfo.Culture.Name = "en-US" OrElse
+            ' voice.VoiceInfo.Culture.Name = "en-GB" OrElse
+            ' voice.VoiceInfo.Culture.Name = "en-CA" OrElse
+            ' voice.VoiceInfo.Culture.Name = "en-AU")
+            'End Function).ToList()
+            Dim matchingVoices As List(Of InstalledVoice) = installedVoices.Where(Function(voice)
+                                                                                      Return hints.Any(Function(hint) voice.VoiceInfo.Name.IndexOf(hint, StringComparison.OrdinalIgnoreCase) >= 0) OrElse
+           voice.VoiceInfo.Culture.TwoLetterISOLanguageName = "en"
+                                                                                  End Function).ToList()
+
+            IO.File.AppendAllText("log.txt", $"Hints used: {String.Join(", ", hints)}" & vbNewLine)
+
+            If matchingVoices.Count > 0 Then
+
+                ' Select the first matching voice
+                Dim selectedVoice = matchingVoices(0).VoiceInfo.Name
+                IO.File.AppendAllText("log.txt", $"Matching voices found: " & matchingVoices.Count & $" Selected Voice: " & selectedVoice & vbNewLine)
+                ' Update the "Voice" cell in the current row
+                Dim rowIndex As Integer = DataGridView1.CurrentCell.RowIndex
+                'DataGridView1.Rows(rowIndex).Cells("Voice").Value = selectedVoice
+                Dim row As DataGridViewRow = DataGridView1.Rows(rowIndex)
+                Dim voiceCell As DataGridViewCell = row.Cells(DataGridView1.Columns("Voice").Index)
+
+                Dim voiceComboBox As DataGridViewComboBoxCell = TryCast(voiceCell, DataGridViewComboBoxCell)
+                If voiceComboBox IsNot Nothing Then
+                    If voiceComboBox.Items.Contains(selectedVoice) Then
+                        voiceComboBox.Value = selectedVoice
+                    Else
+                        IO.File.AppendAllText("log.txt", $"Selected voice '{selectedVoice}' is not in ComboBox list." & vbNewLine)
+                    End If
+                Else
+                    IO.File.AppendAllText("log.txt", "Voice cell is not a ComboBox." & vbNewLine)
+                End If
+                DataGridView1.Invalidate()
+            Else
+                ' Handle the case where no matching voice is found
+                IO.File.AppendAllText("log.txt", $"No matching voice found for {characterName}." & vbNewLine)
+            End If
+        Catch ex As Exception
+            ' Handle any exceptions
+            IO.File.AppendAllText("log.txt", $"Error: {ex.Message}" & vbNewLine)
+        End Try
+    End Sub
+
+    Private Sub DataGridView1_RowPrePaint(sender As Object, e As DataGridViewRowPrePaintEventArgs) Handles DataGridView1.RowPrePaint
+        If e.RowIndex >= 0 Then
+            Dim characterName As String = DataGridView1.Rows(e.RowIndex).Cells("Character").Value?.ToString()
+            Dim voiceName As String = Characters.FirstOrDefault(Function(c) c.Name = characterName)?.VoiceName
+
+            If Not String.IsNullOrEmpty(voiceName) Then
+                DataGridView1.Rows(e.RowIndex).Cells("Voice").Value = voiceName
+            End If
+        End If
+    End Sub
+
+    Private Sub DataGridView1_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellValueChanged
+        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+            ' Get the character name from the changed row
+            Dim characterName As String = DataGridView1.Rows(e.RowIndex).Cells("Character").Value?.ToString()
+
+            ' Find the corresponding Character object
+            Dim currentCharacter As Character = Characters.FirstOrDefault(Function(c) c.Name = characterName)
+
+            If currentCharacter IsNot Nothing Then
+                ' Update the Character object based on the changed cell
+                Select Case DataGridView1.Columns(e.ColumnIndex).Name
+                    Case "Voice"
+                        currentCharacter.VoiceName = DataGridView1.Rows(e.RowIndex).Cells("Voice").Value?.ToString()
+                    Case "Gender"
+                        Try
+                            Dim genderStr As String = DataGridView1.Rows(e.RowIndex).Cells("Gender").Value?.ToString()
+                            If Not String.IsNullOrEmpty(genderStr) Then
+                                Dim selectedGender As Character.GenderType = CType([Enum].Parse(GetType(Character.GenderType), genderStr, True), Character.GenderType)
+                                currentCharacter.Gender = selectedGender
+                            End If
+                        Catch ex As Exception
+                            IO.File.AppendAllText("log.txt", $"Error: {ex.Message}" & vbNewLine)
+                        End Try
+
+                    Case "Age"
+                        Dim ageStr As String = DataGridView1.Rows(e.RowIndex).Cells("Age").Value?.ToString()
+                        Dim age As Integer
+                        If Not String.IsNullOrEmpty(ageStr) AndAlso Integer.TryParse(ageStr, age) Then
+                            currentCharacter.Age = age
+                        Else
+                            ' Handle invalid age value
+                            MessageBox.Show("Invalid age value.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        End If
+                End Select
+
+                ' Update voice selection based on characterName, gender, and age
+                GuessVoiceForCharacter(currentCharacter.Name, currentCharacter.Gender.ToString(), currentCharacter.Age)
+                Dim allVoicesAssigned As Boolean = Characters.All(Function(c) Not String.IsNullOrEmpty(c.VoiceName))
+
+                ' Populate the characterVoiceAssignments dictionary
+                characterVoiceAssignments(currentCharacter.Name) = currentCharacter.VoiceName
+
+                ' Enable/disable NextButton based on voice assignments
+                Form1.NextButton.Enabled = allVoicesAssigned
+            End If
+        End If
+    End Sub
+
+    Private Sub DataGridView1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DataGridView1.DataError
+        e.ThrowException = False ' Prevents the default error dialog
+        IO.File.AppendAllText(Form1.Log, e.Exception.Message & vbNewLine)
+    End Sub
+
+End Class
