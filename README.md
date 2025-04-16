@@ -2,7 +2,7 @@
 The Story to Script Converter is a VB.NET application designed to simplify the process of creating audio versions of written stories using Text-to-Speech (TTS) technology. Unlike standard TTS readers, this program allows users to convert their stories into a script format where each line of dialogue and narration is tagged with the corresponding character or narrator. This enables TTS engines to use different voices for each speaker, creating a more engaging and immersive listening experience.
 
 ⦁	Loads stories from various text-based formats.
-![Spep 1A](Screenshots/Step 1A.png)
+![Step 1A](Screenshots/Step 1A.png)
 ⦁	Step-by-step wizard interface for easy conversion.
 ⦁	Automatic identification of potential character names.
 ⦁	User-friendly interface for assigning dialogue lines to characters.
