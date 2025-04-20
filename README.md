@@ -52,7 +52,7 @@ The Story to Script Converter is a VB.NET application designed to simplify the p
 
 ### Prerequisites
 
-* Requires the .NET Framework 4.7.2 or later.
+* Requires the .NET Framework 4.6.1 or later.
 * FuzzySharp 2.0.2
 * OpenNLP.NET 1.9.4.1
 ### Installation
